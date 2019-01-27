@@ -18,4 +18,4 @@ La commande créera sur votre ordinateur un répertoire *tp-hadoop-python*, dans
   
   > cd Hadoop (par exemple)
 
-La première chose à faire, avant même de commencer l'énoncé du TP est de lire le fichier *readme.md* présent dans le répertoire du TP, qui donne des indications qui pourront vous être utiles.
+La première chose à faire, avant même de commencer l'énoncé du TP est de lire le fichier *readme.md* ou *README.md* présent dans les répertoires des TP, qui donne des indications qui pourront vous être utiles!
