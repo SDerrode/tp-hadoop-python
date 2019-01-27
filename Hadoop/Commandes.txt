@@ -1,0 +1,31 @@
+# Liste des commandes pour le TP Hadoop
+
+hdfs dfs -mkdir LesMiserables
+hdfs dfs -put LesMis*.txt LesMiserables
+chmod +x *.py
+cat LesMiserables_T4.txt | wc_mapper.py
+cat LesMiserables_T4.txt | wc_mapper.py | sort -k1,1 | wc_reducer.py
+cat LesMis*.txt | wc_mapper.py | sort -k1,1 | wc_reducer.py
+export STREAMINGJAR='/cm/shared/apps/hadoop/Hortonworks/2.7.3.2.5.0.0-1245/share/hadoop/tools/lib/hadoop-streaming-2.7.3.2.5.0.0-1245.jar'
+hadoop jar $STREAMINGJAR -files wc_mapper.py,wc_reducer.py -mapper wc_mapper.py -reducer wc_reducer.py -input LesMiserables/LesMis*.txt -output sortie
+hdfs dfs -ls sortie
+hdfs dfs -cat sortie/part-00000
+hdfs dfs -rm -r -f sortie
+hadoop jar $STREAMINGJAR -D mapred.reduce.tasks=3 -input LesMiserables/LesMis*.txt -output sortie -mapper /bin/cat -reducer /bin/wc
+hdfs dfs -ls sortie
+hdfs dfs -cat sortie/part-00001
+hadoop jar $STREAMINGJAR -files wc_mapper.py,wc_reducer.py -mapper wc_mapper.py -combiner wc_reducer.py -reducer wc_reducer.py -input LesMiserables/LesMis*.txt -output sortie
+hadoop jar $STREAMINGJAR -files wc_mapper_improved.py,wc_reducer_improved.py -mapper wc_mapper_improved.py -reducer wc_reducer_improved.py -combiner wc_reducer_improved.py -input LesMiserables/LesMiserables_T1.txt -output sortie
+
+python3 wc1_mrjob.py LesMiserables_T1.txt
+python3 wc1_mrjob.py LesMiserables_T4.txt --mapper
+python3 muw_mrjob.py LesMiserables_T1.txt -r local
+python3 wc2_mrjob.py LesMiserables_T4.txt -r hadoop
+python3 muw_mrjob.py hdfs:///user/sderrode/LesMiserables/LesMiserables_T1.txt -r hadoop  (à adapter avec votre loggin).
+python3 muw_mrjob.py hdfs:///user/sderrode/LesMiserables/LesMiserables_T1.txt -r hadoop --output-dir hdfs:///user/sderrode/sortie/ --no-output
+hdfs dfs -ls sortie
+hdfs dfs -cat sortie/part-00000
+python3 wc2_mrjob.py LesMiserables_T4.txt -r local --jobconf mapred.map.tasks=5 --output-dir sortie --no-output
+hdfs dfs -ls sortie
+hdfs dfs -text sortie/part-0002
+
