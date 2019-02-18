@@ -1,11 +1,11 @@
 # Liste des commandes pour le TP Hadoop
 
-hdfs dfs -mkdir LesMiserables
-hdfs dfs -put LesMis*.txt LesMiserables
-chmod +x *.py
-cat LesMiserables_T4.txt | wc_mapper.py
-cat LesMiserables_T4.txt | wc_mapper.py | sort -k1,1 | wc_reducer.py
-cat LesMis*.txt | wc_mapper.py | sort -k1,1 | wc_reducer.py
+chmod +x *.py (rendre exécutable tous les scripts python)
+cat ../Livre/LesMiserables_T4.txt | wc_mapper.py
+cat ../Livre/LesMiserables_T4.txt | wc_mapper.py | sort -k1,1 | wc_reducer.py
+cat ../Livre/LesMis*.txt | wc_mapper.py | sort -k1,1 | wc_reducer.py
+hdfs dfs -mkdir LivreHDFS
+hdfs dfs -put ../Livre/LesMis*.txt LivreHDFS
 export STREAMINGJAR='/cm/shared/apps/hadoop/Hortonworks/2.7.3.2.5.0.0-1245/share/hadoop/tools/lib/hadoop-streaming-2.7.3.2.5.0.0-1245.jar'
 hadoop jar $STREAMINGJAR -files wc_mapper.py,wc_reducer.py -mapper wc_mapper.py -reducer wc_reducer.py -input LesMiserables/LesMis*.txt -output sortie
 hdfs dfs -ls sortie
