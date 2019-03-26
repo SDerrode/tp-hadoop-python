@@ -21,7 +21,7 @@ if __name__ == "__main__":
     partitions = int(sys.argv[1]) if len(sys.argv) > 1 else 2
     n = 100000 * partitions
 
-    count = sc.parallelize(sc.range(1, n + 1), partitions).map(f).reduce(add)
+    count = sc.parallelize(range(1, n + 1), partitions).map(f).reduce(add)
     print ("Pi is roughly ", 4.0 * count / n)
 
     sc.stop()
